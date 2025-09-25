@@ -1,0 +1,15 @@
+button {
+    cursor: pointer;
+}
+
+.black-primary {
+    background: #1E1E1E;
+}
+
+.black-gray-2 {
+    background: #2D2D2D;
+}
+
+.black-gray-3 {
+    background: #3a3a3a;
+}
