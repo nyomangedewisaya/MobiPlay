@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Livewire\Settings\Appearance;
@@ -15,5 +16,8 @@ Route::post('/register_action', [AuthController::class, 'registerAction'])->name
 Route::middleware('auth')->group(function() {
     Route::middleware('role:admin')->group(function() {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::prefix('managements')->name('managements.')->group(function() {
+            Route::resource('/categories', CategoryController::class);
+        });
     });
 });

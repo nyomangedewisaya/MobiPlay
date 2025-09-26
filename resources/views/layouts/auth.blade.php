@@ -31,7 +31,7 @@
 </head>
 
 {{-- Layout for auth --}}
-<body class="min-h-screen flex flex-col items-center justify-center black-primary">
+<body class="min-h-screen flex flex-col items-center justify-center bg-slate-900">
     @yield('content')
 </body>
 

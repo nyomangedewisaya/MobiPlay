@@ -2,14 +2,34 @@ button {
     cursor: pointer;
 }
 
-.black-primary {
-    background: #1E1E1E;
-}
+@layer components {
+    .transcolor {
+        transition: color 0.3s ease, background-color 0.3s ease;
+    }
 
-.black-gray-2 {
-    background: #2D2D2D;
-}
+    .blue-gradient {
+        background: linear-gradient(to right, #2563eb, #60a5fa, #2563eb);
+    }
 
-.black-gray-3 {
-    background: #3a3a3a;
+    .blue-gradient-wh {
+        background: linear-gradient(to right, #2563eb, #60a5fa, #2563eb);
+        transition: background 0.3s ease-in-out;
+    }
+
+    .blue-gradient-wh:hover {
+        background: linear-gradient(to right, #1d4ed8, #60a5fa, #1d4ed8);
+    }
+
+    .red-gradient {
+        background: linear-gradient(to right, #b91c1c, #ef4444, #b91c1c); 
+    }
+
+    .red-gradient-wh {
+        background: linear-gradient(to right, #b91c1c, #ef4444, #b91c1c);
+        transition: background 0.3s ease-in-out;
+    }
+
+    .red-gradient-wh:hover {
+        background: linear-gradient(to right, #991b1b, #ef4444, #991b1b);
+    }
 }

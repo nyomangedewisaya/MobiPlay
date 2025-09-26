@@ -6,7 +6,7 @@
             <h1 class="text-4xl text-white font-bold">Mobi<span class="text-blue-500">Play</span></h1>
             <p class="text-gray-500 mt-2">Top Up Aman dan Terpercaya</p>
         </div>
-        <div class="black-gray-2 rounded-lg shadow-xl p-8">
+        <div class="bg-slate-800 rounded-lg shadow-xl p-8">
             <h2 class="text-2xl text-gray-200 font-semibold text-center mb-1">Buat akun baru</h2>
             <p class="text-gray-400 text-center mb-6">Gabung dan nikmati benefitnya!</p>
             <form action="{{ route('register_action') }}" method="POST">
@@ -23,7 +23,7 @@
                                 </svg>
                             </span>
                             <input type="name" name="name" value="{{ old('name') }}" placeholder="Your name..."
-                                class="w-full black-gray-3 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                     <div>
@@ -38,7 +38,7 @@
                             </span>
                             <input type="email" name="email" value="{{ old('email') }}"
                                 placeholder="youremail@gmail.com"
-                                class="w-full black-gray-3 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
                     </div>
                     <div>
@@ -54,7 +54,7 @@
                             </span>
                             <input :type="show ? 'text' : 'password'" name="password" value="{{ old('password') }}"
                                 placeholder="..........."
-                                class="w-full black-gray-3 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             {{-- Toggle button for hide/show password --}}
                             <button type="button" @click="show = !show"
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
