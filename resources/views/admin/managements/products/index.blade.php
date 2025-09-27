@@ -70,7 +70,7 @@
         {{-- Filtering data products --}}
         <div class="flex items-center justify-end mb-4" data-aos="fade-up">
             <form action="{{ route('managements.products.index') }}" method="GET"
-                class="flex flex-wrap items-center justify-end gap-4 w-full">
+                class="flex flex-wrap items-center gap-4 w-full">
                 <div class="w-full sm:w-auto">
                     <select name="category" onchange="this.form.submit()"
                         class="w-full sm:w-48 bg-gray-100 dark:bg-slate-700 border border-gray-300 
