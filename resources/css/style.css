@@ -1,4 +1,4 @@
-button {
+button, select {
     cursor: pointer;
 }
 
@@ -32,4 +32,31 @@ button {
     .red-gradient-wh:hover {
         background: linear-gradient(to right, #991b1b, #ef4444, #991b1b);
     }
+
+    .green-gradient {
+        background: linear-gradient(to right, #15803d, #22c55e, #15803d); 
+    }
+
+    .green-gradient-wh {
+        background: linear-gradient(to right, #15803d, #22c55e, #15803d);
+        transition: background 0.3s ease-in-out;
+    }
+
+    .green-gradient-wh:hover {
+        background: linear-gradient(to right, #166534, #22c55e, #166534);
+    }
+
+    .violet-gradient {
+        background: linear-gradient(to right, #6d28d9, #8b5cf6, #6d28d9);
+    }
+
+    .violet-gradient-wh {
+        background: linear-gradient(to right, #6d28d9, #8b5cf6, #6d28d9);
+        transition: background 0.3s ease-in-out;
+    }
+
+    .violet-gradient-wh:hover {
+        background: linear-gradient(to right, #5b21b6, #8b5cf6, #5b21b6);
+    }
+
 }

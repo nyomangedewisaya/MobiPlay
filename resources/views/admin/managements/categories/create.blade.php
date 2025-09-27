@@ -3,12 +3,12 @@
 @section('content')
     <div
         class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)]">
-        <div class="border-b border-gray-200 dark:border-slate-600/50 mb-6 pb-4">
+        <div class="border-b border-gray-200 dark:border-slate-600/50 mb-6 pb-4" data-aos="fade-up">
             <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Tambah Kategori Baru</h2>
             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Isi input di bawah ini untuk menambahkan kategori
                 baru.</p>
         </div>
-        <form action="{{ route('managements.categories.store') }}" method="POST">
+        <form action="{{ route('managements.categories.store') }}" method="POST" data-aos="fade-up">
             @csrf
             <div class="space-y-4">
                 <div>

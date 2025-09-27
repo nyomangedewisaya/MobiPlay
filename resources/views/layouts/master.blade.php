@@ -36,6 +36,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     {{-- CDN with Tom Select --}}
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+    {{-- AOS CSS --}}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     {{-- Adding style css --}}
     <style>
         input[type=number]::-webkit-inner-spin-button,
@@ -71,7 +73,7 @@
 }">
     {{-- Sidebar Admin --}}
     <aside
-        class="sidebar bg-white dark:bg-slate-600/50 dark:border-r dark:border-slate-700 lg:rounded-r-xl shadow-xl fixed top-0 bottom-0 left-0 w-64 z-30 flex flex-col transform transition-transform ease-in-out duration-300 -translate-x-full lg:translate-x-0"
+        class="sidebar bg-white dark:lg:bg-slate-600/40 dark:bg-slate-800 dark:border-r dark:border-slate-700 lg:rounded-r-xl shadow-xl fixed top-0 bottom-0 left-0 w-64 z-40 flex flex-col transform transition-transform ease-in-out duration-300 -translate-x-full lg:translate-x-0"
         :class="{ 'translate-x-0': sidebar }">
         <div
             class="p-4 font-bold text-2xl text-blue-400 border-b border-gray-200 dark:border-gray-500 flex items-center justify-between">
@@ -139,7 +141,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{{ route('managements.products.index') }}"
                                 class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('managements/products*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
                                 <div class="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -245,7 +247,7 @@
     {{-- Overloay for mobile --}}
     <div x-show="sidebar" @click="sidebar = false" x-cloak class="fixed inset-0 bg-black/50 z-20 lg:hidden"></div>
     {{-- Main content --}}
-    <main class="lg:ml-64 lg:pl-2">
+    <main class="lg:ml-64 lg:pl-2 overflow-hidden">
         <div
             class="lg:hidden p-4 bg-gray-50 dark:bg-slate-700 shadow-md flex items-center justify-between sticky top-0 z-10">
             <button @click.stop="sidebar = !sidebar" class="text-gray-700 dark:text-white">
@@ -263,6 +265,15 @@
         </div>
         @yield('content')
     </main>
+
+    {{-- AOS JS --}}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,   
+            duration: 1100 
+        });
+    </script>
 </body>
 
 </html>

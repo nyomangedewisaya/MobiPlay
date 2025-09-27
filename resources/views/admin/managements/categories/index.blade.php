@@ -12,7 +12,7 @@
                 this.deleteModal = true
             }
         }">
-        <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col gap-y-2 md:flex-row md:items-center md:justify-between mb-4 pb-4 gap-0">
+        <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col gap-y-2 md:flex-row md:items-center md:justify-between mb-4 pb-4 gap-0" data-aos="fade-up">
             <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Kategori</h2>
             <div class="flex items-stretch gap-4 w-full md:w-auto">
                 <form action="{{ route('managements.categories.index') }}" method="GET" class="relative w-full sm:w-auto">
@@ -50,7 +50,7 @@
                 </a>
             </div>
         </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg flex-1 overflow-y-auto">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg flex-1 overflow-y-auto" data-aos="fade-up">
             <table
                 class="w-full text-md text-left text-gray-500 dark:text-gray-400 divide divide-gray-200 dark:divide-slate-60/50">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-slate-700 dark:text-slate-300 sticky top-0">
@@ -69,7 +69,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-200 dark:divide-slate-700"">
                     @forelse ($categories as $category)
                         <tr class="bg-white dark:bg-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800/5">
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -78,7 +78,7 @@
                             <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $category->name }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 @if ($category->products_count == 0)
                                     <span
                                         class="red-gradient text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
@@ -86,7 +86,7 @@
                                     </span>
                                 @else
                                     <span
-                                        class="bg-blue-100 text-blue-700 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-800 dark:text-blue-300">
+                                        class="blue-gradient text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
                                         {{ $category->products_count }} Produk
                                     </span>
                                 @endif

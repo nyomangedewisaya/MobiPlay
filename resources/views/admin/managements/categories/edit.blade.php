@@ -2,11 +2,11 @@
 @section('title', 'Edit Kategori')
 @section('content')
     <div class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)]">
-        <div class="border-b border-gray-200 dark:border-slate-600/50 mb-6 pb-4">
+        <div class="border-b border-gray-200 dark:border-slate-600/50 mb-6 pb-4" data-aos="fade-up">
             <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Edit Kategori</h2>
             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Ubah nama kategori di bawah ini.</p>
         </div>
-        <form action="{{ route('managements.categories.update', $category) }}" method="POST">
+        <form action="{{ route('managements.categories.update', $category) }}" method="POST" data-aos="fade-up">
             @csrf
             @method('PUT') 
             <div class="space-y-4">
