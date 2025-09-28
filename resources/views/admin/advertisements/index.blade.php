@@ -13,8 +13,8 @@
                 this.advertisementModal = true
             }
         }">
-        <div
-            class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-4" data-aos="fade-up">
+        {{-- Header with search and add advertisements button --}}
+        <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-4" data-aos="fade-up">
             <div>
                 <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Kelola Iklan</h2>
                 <p class="text-sm text-gray-500 dark:text-slate-400">Kelola iklan yang responsif dan menarik.</p>
@@ -55,6 +55,7 @@
             </div>
         </div>
 
+        {{-- Content for advertisements --}}
         <div class="flex-grow flex flex-col overflow-hidden" data-aos="fade-up">
             {{-- Active advertisements --}}
             <div class="flex-shrink-0">

@@ -167,8 +167,8 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"
-                                class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('managements/input_fields*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
+                            <a href="{{ route('managements.input-fields.productList') }}"
+                                class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('managements/input-fields*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
                                 <div class="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -182,15 +182,15 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#"
-                        class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('transactions') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
+                    <a href="{{ route('orders.index') }}"
+                        class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('orders*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
                         <div class="flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
                             </svg>
-                            Transaksi
+                            Pesanan
                         </div>
                     </a>
                 </li>

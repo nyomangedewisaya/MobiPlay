@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call([ItemsSeeder::class]);
         $this->call([ArticleSeeder::class]);
         $this->call([AdvertisementSeeder::class]);
+        $this->call([ProductInputSeeder::class]);
+        $this->call([OrderSeeder::class]);
+        $this->call([OrderItemSeeder::class]);
 
-        // php artisan db:seed --class=ProductSeeder
+        // php artisan db:seed --class=OrderSeeder
     }
 }

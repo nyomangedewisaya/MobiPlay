@@ -87,7 +87,8 @@ class ItemController extends Controller
 
     public function edit(Item $item)
     {
-        return view('admin.managements.items.edit', compact('item'));
+        $product = $item->product;
+        return view('admin.managements.items.edit', compact('item', 'product'));
     }
 
     public function update(Request $request, Item $item)

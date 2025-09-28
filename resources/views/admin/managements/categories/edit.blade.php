@@ -2,10 +2,20 @@
 @section('title', 'Edit Kategori')
 @section('content')
     <div class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)]">
+        {{-- Header --}}
         <div class="border-b border-gray-200 dark:border-slate-600/50 mb-6 pb-4" data-aos="fade-up">
+            <a href="{{ route('managements.categories.index') }}"
+                class="text-sm text-blue-500 hover:underline mb-2 flex items-center gap-2"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+                Kembali ke Daftar Kategori</a>
             <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Edit Kategori</h2>
             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Ubah nama kategori di bawah ini.</p>
         </div>
+
+        {{-- Form input edit for categories --}}
         <form action="{{ route('managements.categories.update', $category) }}" method="POST" data-aos="fade-up">
             @csrf
             @method('PUT') 

@@ -12,6 +12,7 @@
                 this.deleteModal = true
             }
         }">
+        {{-- Header with add category button --}}
         <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col gap-y-2 md:flex-row md:items-center md:justify-between mb-4 pb-4 gap-0" data-aos="fade-up">
             <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Kategori</h2>
             <div class="flex items-stretch gap-4 w-full md:w-auto">
@@ -50,6 +51,8 @@
                 </a>
             </div>
         </div>
+
+        {{-- Table of content for categories --}}
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg flex-1 overflow-y-auto" data-aos="fade-up">
             <table
                 class="w-full text-md text-left text-gray-500 dark:text-gray-400 divide divide-gray-200 dark:divide-slate-60/50">

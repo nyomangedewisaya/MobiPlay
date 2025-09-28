@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer('price_purchase');
             $table->integer('discount_purchase');
             $table->json('user_data');
-            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
         });
     }

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('field_label', 100);
             $table->string('field_type', 50);
             $table->text('field_desc');
-            $table->string('placeholder', 100);
+            $table->json('field_options')->nullable();
+            $table->string('placeholder', 100)->nullable();
             $table->string('validation_rules', 50);
             $table->timestamps();
         });

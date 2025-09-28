@@ -2,11 +2,20 @@
 @section('title', 'Tambah Artikel Baru')
 @section('content')
     <div class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)] overflow-y-auto">
+        {{-- Header --}}
         <div class="border-b border-gray-200 dark:border-slate-600/50 mb-6 pb-4" data-aos="fade-up">
+            <a href="{{ route('articles.index') }}"
+                class="text-sm text-blue-500 hover:underline mb-2 flex items-center gap-2"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+                Kembali ke Daftar Artikel</a>
             <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Buat Artikel Baru</h2>
             <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Isi formulir di bawah ini untuk membuat draf artikel baru.</p>
         </div>
 
+        {{-- Form input create for articles --}}
         <form action="{{ route('articles.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col flex-grow" data-aos="fade-up">
             @csrf
             <div class="flex-grow overflow-y-auto pr-4 space-y-6">
