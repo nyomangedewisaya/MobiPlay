@@ -59,4 +59,17 @@ button, select {
         background: linear-gradient(to right, #5b21b6, #8b5cf6, #5b21b6);
     }
 
+    .yellow-gradient {
+        background: linear-gradient(to right, #eab308, #facc15, #eab308);
+    }
+
+    .yellow-gradient-wh {
+        background: linear-gradient(to right, #eab308, #facc15, #eab308);
+        transition: background 0.3s ease-in-out;
+    }
+
+    .yellow-gradient-wh:hover {
+        background: linear-gradient(to right, #ca8a04, #facc15, #ca8a04);
+    }
+
 }

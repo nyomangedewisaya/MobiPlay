@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([CategoriesSeeder::class]);
         $this->call([ProductsSeeder::class]);
         $this->call([ItemsSeeder::class]);
+        $this->call([ArticleSeeder::class]);
+        $this->call([AdvertisementSeeder::class]);
 
         // php artisan db:seed --class=ProductSeeder
     }

@@ -25,6 +25,9 @@
                             <input type="email" name="email" value="{{ old('email') }}"
                                 placeholder="youremail@gmail.com"
                                 class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @error('email')
+                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                     <div>
@@ -50,18 +53,21 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274
-                        4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                                 <svg x-show="show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <!-- icon eye-off -->
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478
-                        0-8.268-2.943-9.542-7a10.05 10.05 0 012.102-3.592m3.174-2.474A9.969
-                        9.969 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.973 9.973 0 01-4.043
-                        5.362M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                0-8.268-2.943-9.542-7a10.05 10.05 0 012.102-3.592m3.174-2.474A9.969
+                                9.969 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.973 9.973 0 01-4.043
+                                5.362M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18" />
                                 </svg>
                             </button>
+                            @error('password')
+                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -72,7 +78,8 @@
                     class="mt-6 w-full rounded-lg text-white font-semibold py-2.5 bg-gradient-to-r from-blue-700 via-blue-400 to-blue-700 shadow-[0_0_10px_rgba(59,130,246,0.7)] hover:shadow-[0_0_13px_rgba(59,130,246,0.9)] transition-all duration-300">Login</button>
             </form>
             <p class="text-center text-sm text-gray-400 mt-6">
-                Belum punya akun? <a href="{{ route('register') }}" class="font-semibold text-blue-400 hove:underline">Daftar sekarang</a>
+                Belum punya akun? <a href="{{ route('register') }}"
+                    class="font-semibold text-blue-400 hove:underline">Daftar sekarang</a>
             </p>
         </div>
     </div>

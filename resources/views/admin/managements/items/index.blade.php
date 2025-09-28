@@ -64,7 +64,7 @@
             </a>
             @if ($items->isNotEmpty())
                 <form action="" method="GET"
-                    class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+                    class="flex lg:flex-row sm:flex-col sm:items-center gap-2 w-full sm:w-auto">
                     <select name="order_by" onchange="this.form.submit()"
                         class="w-full md:w-auto sm:w-48 bg-gray-100 dark:bg-slate-700 border border-gray-300 
                        dark:border-slate-600 text-gray-700 dark:text-slate-200 rounded-lg px-4 py-2 

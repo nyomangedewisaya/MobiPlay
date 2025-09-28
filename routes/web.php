@@ -1,13 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\AdvertisementController;
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
-use App\Livewire\Settings\Appearance;
-use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -21,8 +20,10 @@ Route::middleware('auth')->group(function () {
         Route::prefix('managements')
             ->name('managements.')
             ->group(function () {
-                Route::resource('/categories', CategoryController::class);
-                Route::resource('/products', ProductController::class);
+                Route::resources([
+                    '/categories' => CategoryController::class,
+                    '/products' => ProductController::class,
+                ]);
                 Route::patch('/products/{product:slug}/status', [ProductController::class, 'updateStatus'])->name('products.updateStatus'); // update status product
 
                 Route::get('/items/select-product', [ItemController::class, 'productList'])->name('items.productList'); // list product for items
@@ -33,5 +34,9 @@ Route::middleware('auth')->group(function () {
                 Route::patch('/items/{item:slug}/discount', [ItemController::class, 'updateDiscount'])->name('items.updateDiscount'); // update discount items
                 Route::resource('items', ItemController::class)->except(['index', 'show', 'create', 'store']);
             });
+            Route::resource('/articles', ArticleController::class);
+            Route::patch('/articles/{article:slug}/status', [ArticleController::class, 'updateStatus'])->name('articles.updateStatus'); // update status articles
+            Route::resource('/advertisements', AdvertisementController::class);
+            Route::patch('/advertisements/{advertisement:slug}/status', [AdvertisementController::class, 'updateStatus'])->name('advertisements.updateStatus'); // update status advertisements
     });
 });

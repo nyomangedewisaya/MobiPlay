@@ -19,6 +19,9 @@ class AuthController extends Controller
         $validate = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string|min:8',
+        ], [
+            'email.required' => 'Email tidak boleh kosong!',
+            'password.required' => 'Password tidak boleh kosong!',
         ]);
 
         $data = [
@@ -51,6 +54,10 @@ class AuthController extends Controller
             'name' => 'required|string|max:50',
             'email' => 'required|string|email|max:50',
             'password' => 'required|string|min:8',
+        ], [
+            'name.required' => 'Nama lengkap tidak boleh kosong!',
+            'email.required' => 'Email tidak boleh kosong!',
+            'password.required' => 'Password tidak boleh kosong!',
         ]);
 
         $user = User::create([

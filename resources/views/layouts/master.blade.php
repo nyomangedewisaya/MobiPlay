@@ -195,7 +195,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="{{ route('advertisements.index') }}"
                         class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('advertisements*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
                         <div class="flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -208,7 +208,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="{{ route('articles.index') }}"
                         class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('articles*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
                         <div class="flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
