@@ -15,6 +15,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login_action', [AuthController::class, 'loginAction'])->name('login_action');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register_action', [AuthController::class, 'registerAction'])->name('register_action');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {

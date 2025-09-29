@@ -13,8 +13,13 @@ class OrderController extends Controller
         $selectedMonth = $request->input('month', 'all');
         $selectedYear = $request->input('year', date('Y'));
         $selectedStatus = $request->input('status', 'all');
+        $searchQuery = $request->input('search');
 
         $query = Order::query()->with(['orderItems.item', 'user']);
+
+        $query->when($searchQuery, function ($q, $search) {
+            return $q->where('order_code', 'like', '%' . $search . '%');
+        });
 
         $query->when($selectedYear, fn($q) => $q->whereYear('created_at', $selectedYear));
         $query->when($selectedMonth !== 'all', fn($q) => $q->whereMonth('created_at', $selectedMonth));
@@ -25,7 +30,7 @@ class OrderController extends Controller
 
         $years = Order::selectRaw('YEAR(created_at) as year')->distinct()->orderBy('year', 'desc')->pluck('year');
 
-        $isFilterActive = $request->has('month') || $request->has('year') || $request->input('status', 'all') !== 'all';
+        $isFilterActive = $request->has('month') || $request->has('year') || $request->input('status', 'all') !== 'all' || $request->has('search');
 
         return view('admin.orders.index', compact('orders', 'years', 'selectedMonth', 'selectedYear', 'selectedStatus', 'isFilterActive'));
     }

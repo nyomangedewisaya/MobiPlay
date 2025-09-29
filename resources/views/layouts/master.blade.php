@@ -125,7 +125,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                         </svg>
                     </div>
-                    <ul x-show="open" x-transition class="mt-2 space-y-2 ml-5">
+                    <ul x-show="open" x-transition x-cloak class="mt-2 space-y-2 ml-5">
                         <li>
                             <a href="{{ route('managements.categories.index') }}"
                                 class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('managements/categories*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
@@ -257,21 +257,66 @@
                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
-            <div class="flex lg:hidden items-center gap-3">
-                <p class="text-gray-700 dark:text-white font-medium">{{ Auth::user()->name }}</p>
-                <img src="" alt="{{ Auth::user()->name }}"
-                    class="w-10 h-10 rounded-full border border-slate-700">
+            <div x-data="{ mobileDropdownOpen: false }" class="relative">
+                <button @click="mobileDropdownOpen = !mobileDropdownOpen" class="flex items-center gap-3">
+                    <p class="text-gray-700 dark:text-white font-medium">{{ Auth::user()->name }}</p>
+                    <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/40x40/E2E8F0/475569?text=M' }}"
+                        alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-full border border-slate-700">
+                </button>
+                <div x-show="mobileDropdownOpen" @click.outside="mobileDropdownOpen = false" x-transition x-cloak
+                    class="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-slate-700 rounded-lg shadow-xl border dark:border-slate-600 py-1 z-30">
+                    <a href="#"
+                        class="block px-4 py-2 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-600">Profil</a>
+                    <button type="button" @click="$root.logoutModal = true; mobileDropdownOpen = false"
+                        class="w-full text-left block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-slate-600">
+                        Logout
+                    </button>
+                </div>
             </div>
         </div>
         @yield('content')
     </main>
 
+    {{-- Logout modal --}}
+    <div x-show="logoutModal" x-cloak x-transition.opacity class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50">
+    </div>
+    <div x-show="logoutModal" x-cloak x-transition class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div x-cloak x-transition.opacity
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div @click.outside="logoutModal = false"
+                class="bg-white dark:bg-slate-800 rounded-lg shadow-xl w-full max-w-sm p-6 text-center">
+                <svg class="mx-auto h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+                <h3 class="mt-4 text-xl font-bold text-gray-800 dark:text-white">Konfirmasi Logout</h3>
+                <p class="text-gray-600 dark:text-slate-300 mt-2">
+                    Apakah Anda yakin ingin keluar dari sesi Anda?
+                </p>
+                <div class="flex justify-center gap-4 mt-6">
+                    <button type="button" @click="logoutModal = false"
+                        class="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500 transition-colors duration-300">
+                        Batal
+                    </button>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <button type="submit"
+                            class="w-full px-4 py-2 red-gradient-wh text-white rounded-lg font-semibold">
+                            Ya, Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- AOS JS --}}
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
-            once: true,   
-            duration: 1100 
+            once: true,
+            duration: 1100
         });
     </script>
 </body>

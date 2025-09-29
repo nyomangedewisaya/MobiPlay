@@ -2,12 +2,39 @@
 @section('title', 'Kelola Pesanan')
 @section('content')
     @include('partials.alert')
-    <div
-        class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)]">
+    <div class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)]"
+        x-data="{ searchQuery: '{{ request('search', '') }}' }">
         {{-- Header --}}
-        <div class="border-b border-gray-200 dark:border-slate-600/50 mb-4 pb-4" data-aos="fade-up">
-            <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Kelola Pesanan</h2>
-            <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Lihat semua riwayat transaksi yang masuk.</p>
+        <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-4 mb-4 pb-4" data-aos="fade-up">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-700 dark:text-white">Kelola Pesanan</h2>
+                <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Lihat semua riwayat transaksi yang masuk.</p>
+            </div>
+            <div class="w-full sm:w-auto">
+                <form action="{{ route('orders.index') }}" method="GET" class="relative w-full sm:w-auto">
+                    <input type="text" name="search" x-model="searchQuery"
+                        class="w-full bg-gray-200 dark:bg-slate-600/50 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-full pl-4 pr-10 py-3 focus:outline-none"
+                        placeholder="Cari berdasarkan invoice...">
+
+                    <button type="button" x-show="searchQuery"
+                        @click="searchQuery = ''; window.location.href = '{{ route('orders.index') }}'" x-cloak
+                        class="absolute inset-y-0 right-0 flex items-center pr-5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 transcolor">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path
+                                d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+
+                    <button type="submit" x-show="!searchQuery"
+                        class="absolute inset-y-0 right-0 flex items-center pr-5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 transcolor">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
         </div>
 
         {{-- Filter --}}
