@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductInputFieldController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -16,6 +18,9 @@ Route::post('/login_action', [AuthController::class, 'loginAction'])->name('logi
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register_action', [AuthController::class, 'registerAction'])->name('register_action');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/api/search-products', [HomeController::class, 'searchHelper'])->name('api.search-products');
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
@@ -51,4 +56,14 @@ Route::middleware('auth')->group(function () {
         Route::patch('/advertisements/{advertisement:slug}/status', [AdvertisementController::class, 'updateStatus'])->name('advertisements.updateStatus'); // update status advertisements
         Route::resource('/orders', OrderController::class);
     });
+
+    Route::prefix('profile')
+        ->name('profile.')
+        ->group(function () {
+            Route::get('/', [ProfileController::class, 'editProfile'])->name('edit');
+            Route::patch('/', [ProfileController::class, 'updateProfile'])->name('update');
+            Route::get('/password', [ProfileController::class, 'editPassword'])->name('password.edit');
+            Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+        });
+
 });

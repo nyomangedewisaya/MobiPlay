@@ -3,7 +3,7 @@
 @section('content')
     <div
         class="bg-white dark:bg-slate-700/50 rounded-l-xl dark:border-l dark:border-slate-700 shadow-xl px-6 py-4 flex flex-col h-[calc(100vh)] overflow-y-auto">
-        <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-2 relative z-10"
+        <div class="border-b border-gray-200 dark:border-slate-600/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-4 pb-2 relative z-20"
             data-aos="fade-up">
             <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-700 dark:text-white">Selamat datang, Admin</h1>
             <div class="flex items-center gap-4 w-full sm:w-auto">
@@ -22,19 +22,12 @@
                 <div x-data="{ dropdownOpen: false }" class="relative hidden lg:inline-flex">
                     <button @click="dropdownOpen = !dropdownOpen" class="flex items-center gap-3">
                         <p class="text-gray-700 dark:text-white font-medium">{{ Auth::user()->name }}</p>
-                        <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-blue-400 flex items-center justify-center shadow-md">
-                            <svg class="w-6 h-6 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M12 2a7 7 0 0 1 7 7c0 3.866-3.134 7-7 7s-7-3.134-7-7a7 7 0 0 1 7-7Zm-9 18a9 9 0 0 1 18 0H3Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
+                        <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/96x96/E2E8F0/475569?text=M' }}" alt="{{ Auth::user()->name }}" class="w-12 h-12 rounded-full mx-auto">
                     </button>
                     <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" x-transition x-cloak
                         class="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-slate-700 rounded-lg shadow-xl border dark:border-slate-600 py-1 z-50">
-                        <a href="#"
-                            class="block px-4 py-2 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-600">Profil</a>
+                        <button type="button" @click="profileModal = true; mobileDropdownOpen = false"
+                            class="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-600">Profil</button>
                         <button type="button" @click="logoutModal = true; mobileDropdownOpen = false"
                             class="w-full text-left block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-slate-600">Logout</button>
                     </div>
@@ -171,78 +164,55 @@
             </div>
         </div>
 
-        {{-- Popular products dan best selling items card --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6" data-aos="fade-up">
-            <div
-                class="bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700 cursor-pointer hover:-translate-y-1 transition-transform duration-300">
-                <div class="flex items-center gap-3 mb-4">
-                    <svg class="size-6 text-gray-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-3.152a.563.563 0 00-.652 0l-4.725 3.152a.562.562 0 01-.84-.61l1.285-5.385a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                    </svg>
-                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">Produk Terpopuler ({{ $selectedYear }})
-                    </h3>
+        <div class="flex flex-col justify-between pt-6" data-aos="fade-up">
+            {{-- Charts --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"
+                x-data='chartsComponent(@json($lineChartData), @json($doughnutChartData))'
+                x-init="initCharts()" @dark-mode-toggled.window="updateChartColors($event.detail.isDark)">
+                <div
+                    class="lg:col-span-2 bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">Laporan Bulanan ({{ $selectedYear }})</h3>
+                    <p class="text-sm text-gray-500 dark:text-slate-400">Pendapatan vs Jumlah Pesanan Sukses</p>
+                    <div class="mt-4 h-72"><canvas id="monthlyReportChart"></canvas></div>
                 </div>
-                <div class="space-y-4">
-                    @forelse ($popularProducts as $product)
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-4 min-w-0">
-                                <span
-                                    class="text-lg font-bold text-gray-400 dark:text-slate-500 w-5 text-center">{{ $loop->iteration }}</span>
-                                <img src="{{ asset($product->thumbnail_url) }}" alt="{{ $product->name }}"
-                                    class="w-12 h-12 object-cover rounded-md flex-shrink-0">
-                                <div class="min-w-0">
-                                    <p class="font-semibold text-gray-800 dark:text-white truncate">{{ $product->name }}
-                                    </p>
-                                    <p class="text-xs text-gray-500 dark:text-slate-400">{{ $product->total_orders }}
-                                        pesanan sukses</p>
-                                </div>
-                            </div>
-                            <a href="{{ route('managements.products.edit', $product) }}" title="Edit Produk"
-                                class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex-shrink-0">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                </svg>
-                            </a>
-                        </div>
-                    @empty
-                        <p class="text-sm text-center py-4 text-gray-500 dark:text-slate-400">Data tidak cukup untuk
-                            menampilkan produk terpopuler.</p>
-                    @endforelse
+                <div class="bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">Distribusi Status Pesanan</h3>
+                    <p class="text-sm text-gray-500 dark:text-slate-400">Total pesanan di tahun {{ $selectedYear }}</p>
+                    <div class="mt-4 h-72 flex items-center justify-center"><canvas id="orderStatusChart"></canvas></div>
                 </div>
             </div>
 
-            <div
-                class="bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700 cursor-pointer hover:-translate-y-1 transition-transform duration-300">
-                <div class="flex items-center gap-3 mb-4">
-                    <svg class="size-6 text-gray-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
-                    </svg>
-                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">Item Terlaris ({{ $selectedYear }})</h3>
-                </div>
-                <div class="space-y-4">
-                    @forelse ($bestSellingItems as $item)
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="flex items-center gap-4 min-w-0">
-                                <span
-                                    class="text-lg font-bold text-gray-400 dark:text-slate-500 w-5 text-center">{{ $loop->iteration }}</span>
-                                <img src="{{ asset($item->image_url ?? 'https://placehold.co/48x48/E2E8F0/475569?text=M') }}"
-                                    alt="{{ $item->name }}" class="w-12 h-12 object-cover rounded-md flex-shrink-0">
-                                <div class="min-w-0">
-                                    <p class="font-semibold text-gray-800 dark:text-white truncate">{{ $item->name }}
-                                    </p>
-                                    <p class="text-xs text-gray-500 dark:text-slate-400">Dibeli sebanyak
-                                        {{ $item->total_sales_count }} kali</p>
+            {{-- Popular products dan best selling items card --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <div
+                    class="bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700 cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg class="size-6 text-gray-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-3.152a.563.563 0 00-.652 0l-4.725 3.152a.562.562 0 01-.84-.61l1.285-5.385a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                        </svg>
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-white">Produk Terpopuler
+                            ({{ $selectedYear }})
+                        </h3>
+                    </div>
+                    <div class="space-y-4">
+                        @forelse ($popularProducts as $product)
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-4 min-w-0">
+                                    <span
+                                        class="text-lg font-bold text-gray-400 dark:text-slate-500 w-5 text-center">{{ $loop->iteration }}</span>
+                                    <img src="{{ asset($product->thumbnail_url) }}" alt="{{ $product->name }}"
+                                        class="w-12 h-12 object-cover rounded-md flex-shrink-0">
+                                    <div class="min-w-0">
+                                        <p class="font-semibold text-gray-800 dark:text-white truncate">
+                                            {{ $product->name }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">{{ $product->total_orders }}
+                                            pesanan sukses</p>
+                                    </div>
                                 </div>
-                            </div>
-                            @if ($item->product)
-                                <a href="{{ route('managements.items.index', $item->product) }}"
-                                    title="Lihat Item Produk"
+                                <a href="{{ route('managements.products.edit', $product) }}"
                                     class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex-shrink-0">
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                         stroke="currentColor">
@@ -250,38 +220,63 @@
                                             d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                                     </svg>
                                 </a>
-                            @endif
-                        </div>
-                    @empty
-                        <p class="text-sm text-center py-4 text-gray-500 dark:text-slate-400">Data tidak cukup untuk
-                            menampilkan item terlaris.</p>
-                    @endforelse
+                            </div>
+                        @empty
+                            <p class="text-sm text-center py-4 text-gray-500 dark:text-slate-400">Data tidak cukup untuk
+                                menampilkan produk terpopuler.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700 cursor-pointer hover:-translate-y-1 transition-transform duration-300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <svg class="size-6 text-gray-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                        </svg>
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-white">Item Terlaris ({{ $selectedYear }})
+                        </h3>
+                    </div>
+                    <div class="space-y-4">
+                        @forelse ($bestSellingItems as $item)
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-4 min-w-0">
+                                    <span
+                                        class="text-lg font-bold text-gray-400 dark:text-slate-500 w-5 text-center">{{ $loop->iteration }}</span>
+                                    <img src="{{ asset($item->image_url ?? 'https://placehold.co/48x48/E2E8F0/475569?text=M') }}"
+                                        alt="{{ $item->name }}"
+                                        class="w-12 h-12 object-cover rounded-md flex-shrink-0">
+                                    <div class="min-w-0">
+                                        <p class="font-semibold text-gray-800 dark:text-white truncate">
+                                            {{ $item->name }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400">Dibeli sebanyak
+                                            {{ $item->total_sales_count }} kali</p>
+                                    </div>
+                                </div>
+                                @if ($item->product)
+                                    <a href="{{ route('managements.items.index', $item->product) }}"
+                                        title="Lihat Item Produk"
+                                        class="p-2 rounded-lg text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors flex-shrink-0">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                        </svg>
+                                    </a>
+                                @endif
+                            </div>
+                        @empty
+                            <p class="text-sm text-center py-4 text-gray-500 dark:text-slate-400">Data tidak cukup untuk
+                                menampilkan item terlaris.</p>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- Charts --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6" data-aos="fade-up">
-            {{-- Line Chart Container --}}
-            <div
-                class="lg:col-span-2 bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700 cursor-pointer hover:-translate-y-1 transition-transform duration-300">
-                <h3 class="text-lg font-bold text-gray-800 dark:text-white">Laporan Bulanan ({{ $selectedYear }})</h3>
-                <p class="text-sm text-gray-500 dark:text-slate-400">Pendapatan vs Jumlah Pesanan Sukses</p>
-                <div class="mt-4 h-72">
-                    <canvas id="monthlyReportChart"></canvas>
-                </div>
-            </div>
-
-            {{-- Doughnut Chart Container --}}
-            <div
-                class="bg-white dark:bg-slate-900/40 p-6 rounded-lg shadow-md border dark:border-slate-700 cursor-pointer hover:-translate-y-1 transition-transform duration-300">
-                <h3 class="text-lg font-bold text-gray-800 dark:text-white">Distribusi Status Pesanan</h3>
-                <p class="text-sm text-gray-500 dark:text-slate-400">Total pesanan di tahun {{ $selectedYear }}</p>
-                <div class="mt-4 h-72 flex items-center justify-center">
-                    <canvas id="orderStatusChart"></canvas>
-                </div>
-            </div>
-        </div>
 
     </div>
 
@@ -297,160 +292,177 @@
                     if (isNaN(this.targetValue)) {
                         this.targetValue = 0;
                     }
-
-                    const frameDuration = 1000 / 60;
-                    const totalFrames = Math.round(this.duration / frameDuration);
-                    const easeOutQuad = t => t * (2 - t);
-                    let frame = 0;
-
-                    const counter = setInterval(() => {
-                        frame++;
-                        const progress = easeOutQuad(frame / totalFrames);
-                        this.currentValue = this.targetValue * progress;
-                        if (frame === totalFrames) {
-                            clearInterval(counter);
+                    let start = 0;
+                    const increment = this.targetValue / (this.duration / 16);
+                    const updateCounter = () => {
+                        start += increment;
+                        if (start < this.targetValue) {
+                            this.currentValue = Math.ceil(start);
+                            requestAnimationFrame(updateCounter);
+                        } else {
                             this.currentValue = this.targetValue;
                         }
-                    }, frameDuration);
+                    };
+                    updateCounter();
                 }
             }));
-
-            // Initial Charts
-            const lineChartData = @json($lineChartData);
-            const doughnutChartData = @json($doughnutChartData);
-            const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-            Chart.register(ChartDataLabels);
-
-            // Line Chart
-            const monthlyReportCtx = document.getElementById('monthlyReportChart')?.getContext('2d');
-            if (monthlyReportCtx) {
-                new Chart(monthlyReportCtx, {
-                    type: 'line',
-                    data: {
-                        labels: lineChartData.labels,
-                        datasets: [{
-                                label: 'Pendapatan (Rp)',
-                                data: lineChartData.revenues,
-                                borderColor: 'rgba(96, 165, 250, 1)',
-                                backgroundColor: 'rgba(96, 165, 250, 0.2)',
-                                fill: true,
-                                tension: 0.4,
-                                yAxisID: 'yRevenue',
-                            },
-                            {
-                                label: 'Pesanan Sukses',
-                                data: lineChartData.orders,
-                                borderColor: 'rgba(167, 139, 250, 1)',
-                                backgroundColor: 'rgba(167, 139, 250, 0.2)',
-                                fill: true,
-                                tension: 0.4,
-                                yAxisID: 'yOrders',
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: {
-                            mode: 'index',
-                            intersect: false
-                        },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    color: isDarkMode ? 'white' : 'black'
-                                }
-                            },
-                            yRevenue: {
-                                type: 'linear',
-                                position: 'left',
-                                ticks: {
-                                    color: 'rgba(45, 165, 250, 1)',
-                                    callback: function(value) {
-                                        if (value >= 1000000) return 'Rp ' + (value / 1000000) + ' Jt';
-                                        if (value >= 1000) return 'Rp ' + (value / 1000) + ' Rb';
-                                        return 'Rp ' + value;
-                                    }
-                                }
-                            },
-                            yOrders: {
-                                type: 'linear',
-                                position: 'right',
-                                grid: {
-                                    drawOnChartArea: false
-                                },
-                                ticks: {
-                                    color: 'rgba(167, 139, 250, 1)'
-                                }
-                            }
-                        },
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) label += ': ';
-                                        if (context.dataset.yAxisID === 'yRevenue') {
-                                            label += new Intl.NumberFormat('id-ID', {
-                                                style: 'currency',
-                                                currency: 'IDR'
-                                            }).format(context.raw);
-                                        } else {
-                                            label += context.raw;
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Doughnut Chart
-            const orderStatusCtx = document.getElementById('orderStatusChart')?.getContext('2d');
-            if (orderStatusCtx && doughnutChartData.labels.length > 0) {
-                new Chart(orderStatusCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: doughnutChartData.labels,
-                        datasets: [{
-                            data: doughnutChartData.counts,
-                            backgroundColor: [
-                                'rgba(34, 197, 94, 1)', // Bright Green
-                                'rgba(250, 204, 21, 1)', // Bright Yellow
-                                'rgba(239, 68, 68, 1)', // Bright Red
-                                'rgba(209, 213, 219, 1)' // Bright Gray
-                            ],
-                            borderColor: isDarkMode ? '#1e293b' : '#ffffff',
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                                labels: {
-                                    color: isDarkMode ? 'white' : 'black'
-                                }
-                            },
-                            datalabels: {
-                                formatter: (value, ctx) => {
-                                    let sum = 0;
-                                    let dataArr = ctx.chart.data.datasets[0].data;
-                                    dataArr.map(data => sum += data);
-                                    if (sum === 0) return '0%';
-                                    let percentage = (value * 100 / sum).toFixed(1) + "%";
-                                    return percentage;
-                                },
-                                color: '#000000',
-                            }
-                        }
-                    }
-                });
-            }
         });
+
+        function chartsComponent(lineData, doughnutData) {
+            return {
+                lineChart: null,
+                doughnutChart: null,
+                initCharts() {
+                    Chart.register(ChartDataLabels);
+                    const isDark = document.documentElement.classList.contains('dark');
+
+                    const monthlyReportCtx = document.getElementById('monthlyReportChart')?.getContext('2d');
+                    if (monthlyReportCtx) {
+                        this.lineChart = new Chart(monthlyReportCtx, {
+                            type: 'line',
+                            data: {
+                                labels: lineData.labels,
+                                datasets: [{
+                                        label: 'Pendapatan (Rp)',
+                                        data: lineData.revenues,
+                                        borderColor: 'rgba(96, 165, 250, 1)',
+                                        backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                                        fill: true,
+                                        tension: 0.4,
+                                        yAxisID: 'yRevenue'
+                                    },
+                                    {
+                                        label: 'Pesanan Sukses',
+                                        data: lineData.orders,
+                                        borderColor: 'rgba(167, 139, 250, 1)',
+                                        backgroundColor: 'rgba(167, 139, 250, 0.2)',
+                                        fill: true,
+                                        tension: 0.4,
+                                        yAxisID: 'yOrders'
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                interaction: {
+                                    mode: 'index',
+                                    intersect: false
+                                },
+                                scales: {
+                                    x: {
+                                        ticks: {
+                                            color: isDark ? '#e2e8f0' : '#475569'
+                                        },
+                                        grid: {
+                                            color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                                        }
+                                    },
+                                    yRevenue: {
+                                        type: 'linear',
+                                        position: 'left',
+                                        ticks: {
+                                            color: 'rgba(96, 165, 250, 1)',
+                                            callback: value => {
+                                                if (value >= 1e6) return `Rp ${value / 1e6} Jt`;
+                                                if (value >= 1e3) return `Rp ${value / 1e3} Rb`;
+                                                return `Rp ${value}`;
+                                            }
+                                        },
+                                        grid: {
+                                            color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+                                        }
+                                    },
+                                    yOrders: {
+                                        type: 'linear',
+                                        position: 'right',
+                                        grid: {
+                                            drawOnChartArea: false
+                                        },
+                                        ticks: {
+                                            color: 'rgba(167, 139, 250, 1)',
+                                            stepSize: 1
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        labels: {
+                                            color: isDark ? '#e2e8f0' : '#475569'
+                                        }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: context =>
+                                                `${context.dataset.label}: ${context.dataset.yAxisID === 'yRevenue' ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(context.raw) : context.raw}`
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    const orderStatusCtx = document.getElementById('orderStatusChart')?.getContext('2d');
+                    if (orderStatusCtx && doughnutData.labels.length > 0) {
+                        this.doughnutChart = new Chart(orderStatusCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: doughnutData.labels,
+                                datasets: [{
+                                    data: doughnutData.counts,
+                                    backgroundColor: ['rgba(52, 211, 153, 0.9)', 'rgba(251, 191, 36, 0.9)',
+                                        'rgba(239, 68, 68, 0.9)', 'rgba(156, 163, 175, 0.9)'
+                                    ],
+                                    borderColor: isDark ? '#1f2937' : '#ffffff',
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            color: isDark ? '#e2e8f0' : '#334155',
+                                            boxWidth: 12,
+                                            padding: 20
+                                        }
+                                    },
+                                    datalabels: {
+                                        formatter: (value, ctx) => {
+                                            let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b,
+                                                0);
+                                            if (sum === 0) return '0%';
+                                            return `${(value * 100 / sum).toFixed(1)}%`;
+                                        },
+                                        color: '#ffffff',
+                                        font: {
+                                            weight: 'bold'
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                updateChartColors(isDark) {
+                    if (this.lineChart) {
+                        this.lineChart.options.scales.x.ticks.color = isDark ? '#e2e8f0' : '#475569';
+                        this.lineChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#334155';
+                        this.lineChart.options.scales.x.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' :
+                            'rgba(0, 0, 0, 0.1)';
+                        this.lineChart.options.scales.yRevenue.grid.color = isDark ? 'rgba(255, 255, 255, 0.1)' :
+                            'rgba(0, 0, 0, 0.1)';
+                        this.lineChart.update('none');
+                    }
+
+                    if (this.doughnutChart) {
+                        this.doughnutChart.data.datasets[0].borderColor = isDark ? '#1f2937' : '#ffffff';
+                        this.doughnutChart.options.plugins.legend.labels.color = isDark ? '#e2e8f0' : '#334155';
+                        this.doughnutChart.update('none');
+                    }
+                }
+            }
+        }
     </script>
 @endsection

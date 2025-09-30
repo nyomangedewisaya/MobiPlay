@@ -59,18 +59,15 @@
 <body class="bg-gray-100 dark:bg-slate-900 font-inter" x-data="{
     sidebar: false,
     logoutModal: false,
+    profileModal: false,
     darkMode: localStorage.getItem('darkMode') === 'true',
-
     toggleDarkMode() {
+        window.location.reload();
         this.darkMode = !this.darkMode;
         localStorage.setItem('darkMode', this.darkMode);
-        if (this.darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        document.documentElement.classList.toggle('dark', this.darkMode);
     }
-}">
+}" x-init="document.documentElement.classList.toggle('dark', darkMode)">
     {{-- Sidebar Admin --}}
     <aside
         class="sidebar bg-white dark:lg:bg-slate-600/40 dark:bg-slate-800 dark:border-r dark:border-slate-700 lg:rounded-r-xl shadow-xl fixed top-0 bottom-0 left-0 w-64 z-40 flex flex-col transform transition-transform ease-in-out duration-300 -translate-x-full lg:translate-x-0"
@@ -125,7 +122,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                         </svg>
                     </div>
-                    <ul x-show="open" x-transition x-cloak class="mt-2 space-y-2 ml-5">
+                    <ul x-show="open" x-transition class="mt-2 space-y-2 ml-5">
                         <li>
                             <a href="{{ route('managements.categories.index') }}"
                                 class="block px-4 py-2 rounded-lg transition-colors duration-300 {{ Request::is('managements/categories*') ? 'text-white blue-gradient' : 'text-gray-600 dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-600' }}">
@@ -221,6 +218,40 @@
                     </a>
                 </li>
             </ul>
+
+            <div class="p-4 mt-4 border-t border-gray-200 dark:border-slate-700 lg:hidden">
+                <h3 class="px-4 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Akun
+                </h3>
+                <ul class="space-y-3 font-medium">
+                    <li>
+                        <button type="button" @click="profileModal = true; sidebar = false"
+                            class="w-full text-left block px-4 py-2 rounded-lg transition-colors duration-300 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-slate-600">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                </svg>
+                                Profil
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" @click="logoutModal = true; sidebar = false"
+                            class="w-full text-left block px-4 py-2 rounded-lg transition-colors duration-300 text-red-600 dark:text-red-400 hover:bg-gray-200 dark:hover:bg-slate-600">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0-3-3m0 0-3 3m3-3H9" />
+                                </svg>
+                                Logout
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </nav>
         {{-- Toggle button for change dark/light mode --}}
         <div class="mt-auto p-4 border-t border-gray-200 dark:border-slate-600/50">
@@ -257,21 +288,10 @@
                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
-            <div x-data="{ mobileDropdownOpen: false }" class="relative">
-                <button @click="mobileDropdownOpen = !mobileDropdownOpen" class="flex items-center gap-3">
-                    <p class="text-gray-700 dark:text-white font-medium">{{ Auth::user()->name }}</p>
-                    <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/40x40/E2E8F0/475569?text=M' }}"
-                        alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-full border border-slate-700">
-                </button>
-                <div x-show="mobileDropdownOpen" @click.outside="mobileDropdownOpen = false" x-transition x-cloak
-                    class="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-slate-700 rounded-lg shadow-xl border dark:border-slate-600 py-1 z-30">
-                    <a href="#"
-                        class="block px-4 py-2 text-sm text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-600">Profil</a>
-                    <button type="button" @click="$root.logoutModal = true; mobileDropdownOpen = false"
-                        class="w-full text-left block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-slate-600">
-                        Logout
-                    </button>
-                </div>
+            <div class="flex items-center gap-3">
+                <p class="text-gray-700 dark:text-white font-medium">{{ Auth::user()->name }}</p>
+                <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/40x40/E2E8F0/475569?text=M' }}"
+                    alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-full border border-slate-700">
             </div>
         </div>
         @yield('content')
@@ -311,14 +331,56 @@
         </div>
     </div>
 
+    {{-- Profile modal --}}
+    <div x-show="profileModal" x-cloak x-transition.opacity class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50">
+    </div>
+    <div x-show="profileModal" x-cloak x-transition class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div x-cloak x-transition.opacity
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div @click.outside="profileModal = false"
+                class="bg-white dark:bg-slate-800 rounded-lg shadow-xl w-full max-w-sm">
+                <div class="flex justify-end p-4">
+                    <button @click="profileModal = false"
+                        class="text-gray-500 hover:text-gray-800 dark:hover:text-white"><svg
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="pb-6 text-center">
+                    <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/96x96/E2E8F0/475569?text=M' }}"
+                        alt="{{ Auth::user()->name }}"
+                        class="w-24 h-24 rounded-full mx-auto border-4 border-white dark:border-slate-600 shadow-lg">
+                    <h3 class="mt-4 text-2xl font-bold text-gray-800 dark:text-white">{{ Auth::user()->name }}</h3>
+                    <p class="text-gray-500 dark:text-slate-400">{{ Auth::user()->email }}</p>
+                </div>
+                <div class="space-y-2 p-4 border-t border-gray-200 dark:border-slate-700">
+                    <a href="{{ route('profile.edit') }}"
+                        class="block text-center w-full px-4 py-2 text-sm font-semibold text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-lg transition-colors duration-200">Edit
+                        Profil</a>
+                    <a href="{{ route('profile.password.edit') }}"
+                        class="block text-center w-full px-4 py-2 text-sm font-semibold text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 rounded-lg transition-colors duration-200">Ganti
+                        Password</a>
+                </div>
+                <div class="p-4 border-t border-gray-200 dark:border-slate-700">
+                    <button type="button" @click="logoutModal = true; profileModal = false"
+                        class="w-full text-center px-4 py-2 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-lg transition-colors duration-200">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- AOS JS --}}
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
             once: true,
-            duration: 1100
+            duration: 800
         });
     </script>
 </body>
+
+</html>
 
 </html>

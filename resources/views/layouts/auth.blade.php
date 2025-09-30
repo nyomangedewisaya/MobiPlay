@@ -22,6 +22,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    {{-- CDN with AOS CSS --}}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     {{-- Adding style css --}}
     <style>
         [x-cloak] {
@@ -31,8 +34,17 @@
 </head>
 
 {{-- Layout for auth --}}
-<body class="min-h-screen flex flex-col items-center justify-center bg-slate-900">
+<body class="min-h-screen flex flex-col items-center justify-center px-4 bg-slate-900">
     @yield('content')
+
+    {{-- AOS JS --}}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+    </script>
 </body>
 
 </html>

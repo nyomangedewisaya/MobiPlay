@@ -66,10 +66,10 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'user',
         ]);
-        // Auth::login($user);
-        // $request->session()->regenerate();
+        Auth::login($user);
+        $request->session()->regenerate();
 
-        // return redirect()->route('home');
+        return redirect()->route('home');
     }
 
     public function logout(Request $request) {

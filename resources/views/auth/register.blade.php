@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @section('title', 'Login Mobiplay')
 @section('content')
-    <div class="sm:w-full sm:max-w-lg sm:mx-auto">
+    <div class="w-full max-w-md mx-auto">
         <div class="text-center mb-8">
             <h1 class="text-4xl text-white font-bold">Mobi<span class="text-blue-500">Play</span></h1>
             <p class="text-gray-500 mt-2">Top Up Aman dan Terpercaya</p>
@@ -55,12 +55,10 @@
                             <input :type="show ? 'text' : 'password'" name="password" value="{{ old('password') }}"
                                 placeholder="..........."
                                 class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            {{-- Toggle button for hide/show password --}}
                             <button type="button" @click="show = !show"
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
                                 <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <!-- icon eye -->
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274
