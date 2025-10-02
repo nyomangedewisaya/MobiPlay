@@ -163,8 +163,8 @@ composer run dev   # alternatif via composer
 
 | Role   | Email                | Password  |
 |--------|----------------------|-----------|
-| 👑 **Admin** | `admin@mobiplay.com` | `admin123` |
-| 🙍 **User**  | `user@mobiplay.com`  | `password123` |
+| 👑 **Admin** | `admin@gmail.com` | `admin123` |
+| 🙍 **User**  | `user@gmail.com`  | `password123` |
 
 > ⚡ Gunakan akun di atas untuk mencoba fitur MobiPlay tanpa perlu registrasi.  
 
