@@ -1,10 +1,10 @@
 @extends('layouts.auth')
-@section('title', 'Login Mobiplay')
+@section('title', 'Daftar Mobiplay')
 @section('content')
-    <div class="w-full max-w-md mx-auto">
-        <div class="text-center mb-8">
+    <div class="w-full max-w-lg  mx-auto">
+        <div class="text-center mb-4">
             <h1 class="text-4xl text-white font-bold">Mobi<span class="text-blue-500">Play</span></h1>
-            <p class="text-gray-500 mt-2">Top Up Aman dan Terpercaya</p>
+            <p class="text-gray-500">Top Up Aman dan Terpercaya</p>
         </div>
         <div class="bg-slate-800 rounded-lg shadow-xl p-8">
             <h2 class="text-2xl text-gray-200 font-semibold text-center mb-1">Buat akun baru</h2>
@@ -25,6 +25,9 @@
                             <input type="name" name="name" value="{{ old('name') }}" placeholder="Your name..."
                                 class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="email" class="text-sm font-medium text-gray-300">Email</label>
@@ -40,6 +43,9 @@
                                 placeholder="youremail@gmail.com"
                                 class="w-full bg-slate-600/50 border border-gray-600 text-gray-200 rounded-lg pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label for="password" class="text-sm font-medium text-gray-300">Password</label>
@@ -75,6 +81,9 @@
                                 </svg>
                             </button>
                         </div>
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
                 <button type="submit"

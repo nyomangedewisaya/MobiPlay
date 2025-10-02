@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
+use App\Models\Article;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -37,7 +41,9 @@ class HomeController extends Controller
                 ->sortBy(fn($cat) => array_search($cat->name, $categoryOrder));
         }
 
-        return view('frontend.home', compact('advertisements', 'categories', 'isSearchActive', 'searchResults', 'searchQuery'));
+        $articles = Article::where('status', 'active')->latest()->take(6)->get();
+
+        return view('frontend.home', compact('advertisements', 'categories', 'isSearchActive', 'searchResults', 'searchQuery', 'articles'));
     }
 
     public function searchHelper(Request $request)
@@ -53,5 +59,33 @@ class HomeController extends Controller
             ->get();
 
         return response()->json($products);
+    }
+
+    public function aboutUs() {
+        return view('frontend.about-us');
+    }
+
+    public function history(Request $request)
+    {
+        $searchQuery = $request->input('search');
+        $dateRange = $request->input('range', 'all'); 
+
+        $query = Order::where('user_id', Auth::id())
+                      ->with(['orderItems.item.product']); 
+
+        $query->when($searchQuery, function ($q, $search) {
+            return $q->where('order_code', 'like', '%' . $search . '%');
+        });
+
+        $query->when($dateRange !== 'all', function ($q) use ($dateRange) {
+            $days = (int) $dateRange;
+            if ($days > 0) {
+                return $q->where('created_at', '>=', Carbon::now()->subDays($days));
+            }
+        });
+
+        $orders = $query->latest()->get(); 
+
+        return view('frontend.history', compact('orders'));
     }
 }

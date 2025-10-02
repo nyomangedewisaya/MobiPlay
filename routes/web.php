@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductInputFieldController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/api/search-products', [HomeController::class, 'searchHelper'])->name('api.search-products');
+Route::get('/order/{product:slug}', [CheckoutController::class, 'show'])->name('transaction.show');
+Route::get('/checkout/{order:order_code}', [CheckoutController::class, 'success'])->name('transaction.success');
+Route::post('/order/{product:slug}', [CheckoutController::class, 'checkout'])->name('transaction.checkout');
 
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
@@ -52,9 +56,12 @@ Route::middleware('auth')->group(function () {
             });
         Route::resource('/articles', ArticleController::class);
         Route::patch('/articles/{article:slug}/status', [ArticleController::class, 'updateStatus'])->name('articles.updateStatus'); // update status articles
+        
         Route::resource('/advertisements', AdvertisementController::class);
         Route::patch('/advertisements/{advertisement:slug}/status', [AdvertisementController::class, 'updateStatus'])->name('advertisements.updateStatus'); // update status advertisements
-        Route::resource('/orders', OrderController::class);
+
+        Route::resource('/orders', OrderController::class)->only('index');
+        Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus'); // update status orders
     });
 
     Route::prefix('profile')
@@ -66,4 +73,6 @@ Route::middleware('auth')->group(function () {
             Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
         });
 
+    Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about-us');
+    Route::get('/history', [HomeController::class, 'history'])->name('history');
 });

@@ -5,24 +5,22 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        $this->call([UserSeeder::class]);
-        $this->call([CategoriesSeeder::class]);
-        $this->call([ProductsSeeder::class]);
-        $this->call([ItemsSeeder::class]);
-        $this->call([ArticleSeeder::class]);
-        $this->call([AdvertisementSeeder::class]);
-        $this->call([ProductInputSeeder::class]);
-        $this->call([OrderSeeder::class]);
-        $this->call([OrderItemSeeder::class]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // php artisan db:seed --class=OrderSeeder
+        $this->call([
+            UserSeeder::class,
+            CategorySeeder::class,
+            ProductSeeder::class, 
+            ArticleAndAdvertisementSeeder::class,
+            OrderSeeder::class, 
+        ]);
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

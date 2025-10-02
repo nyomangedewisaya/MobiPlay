@@ -104,6 +104,7 @@ class DashboardController extends Controller
             DB::raw('COUNT(*) as count')
         )
         ->whereYear('created_at', $selectedYear)
+        ->where('status', '!=', 'cancelled')
         ->groupBy('status')
         ->pluck('count', 'status');
 

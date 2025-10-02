@@ -18,9 +18,20 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: none;
+        }
+
         [x-cloak] {
             display: none !important;
         }
+
         /* Style for pagination Swiper */
         .advertisement-pagination .swiper-pagination-bullet-active {
             background-color: white;
@@ -93,9 +104,34 @@
                     </div>
                 </div>
                 <nav class="p-4 space-y-2">
-                    <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md hover:bg-slate-700">Beranda</a>
-                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-700">Histori Transaksi</a>
-                    <a href="#" class="block px-3 py-2 rounded-md hover:bg-slate-700">Tentang Kami</a>
+                    <a href="{{ route('home') }}"
+                        class="px-4 py-2 rounded-md flex items-center gap-4 {{ Request::is('/') ? 'blue-gradient font-semibold text-white' : 'hover:bg-slate-700' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                        </svg>
+                        Beranda
+                    </a>
+                    <a href="{{ route('history') }}"
+                        class="px-4 py-2 rounded-md flex items-center gap-4 {{ Request::is('history') ? 'blue-gradient font-semibold text-white' : 'hover:bg-slate-700' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+
+                        Histori Transaksi
+                    </a>
+                    <a href="{{ route('about-us') }}"
+                        class="px-4 py-2 rounded-md flex items-center gap-4 {{ Request::is('about-us') ? 'blue-gradient font-semibold text-white' : 'hover:bg-slate-700' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                        </svg>
+                        Tentang Kami
+                    </a>
                 </nav>
             @endauth
         </div>
@@ -112,7 +148,12 @@
             @endguest
             @auth
                 <button type="button" @click="logoutModal = true; sidebarOpen = false"
-                    class="w-full text-left block px-3 py-2 text-sm font-semibold text-red-500 hover:bg-slate-700 rounded-md">
+                    class="w-full text-left px-3 py-2 text-sm font-semibold text-red-500 hover:bg-slate-700 rounded-md flex items-center gap-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                    </svg>
                     Keluar
                 </button>
             @endauth
@@ -126,7 +167,8 @@
         <div class=" px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div class="flex items-center gap-4">
                 <button @click="sidebarOpen = true" class="text-slate-300 hover:text-white">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
@@ -163,47 +205,49 @@
                         });
                     }
                 }" class="relative">
-                    <form action="{{ route('home') }}" method="GET" x-ref="searchForm">
-                        <input type="text" name="search" placeholder="Cari aplikasi..." x-model="searchQuery"
-                            @input.debounce.300ms="fetchSuggestions()"
-                            @focus="showSuggestions = suggestions.length > 0"
-                            class="w-full bg-gray-200 dark:bg-slate-600/50 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-full pl-4 pr-10 py-3 focus:outline-none">
+                    @if (Request::is('/'))
+                        <form action="{{ route('home') }}" method="GET" x-ref="searchForm">
+                            <input type="text" name="search" placeholder="Cari produk disini..."
+                                x-model="searchQuery" @input.debounce.300ms="fetchSuggestions()"
+                                @focus="showSuggestions = suggestions.length > 0"
+                                class="w-full bg-gray-200 dark:bg-slate-600/50 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-full pl-4 pr-10 py-3 focus:outline-none">
 
-                        <button type="button" x-show="searchQuery"
-                            @click="searchQuery = ''; window.location.href = '{{ route('home') }}'" x-cloak
-                            class="absolute inset-y-0 right-0 flex items-center pr-5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 transcolor">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                class="size-5">
-                                <path
-                                    d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
-                            </svg>
-                        </button>
+                            <button type="button" x-show="searchQuery"
+                                @click="searchQuery = ''; window.location.href = '{{ route('home') }}'" x-cloak
+                                class="absolute inset-y-0 right-0 flex items-center pr-5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 transcolor">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="size-5">
+                                    <path
+                                        d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                </svg>
+                            </button>
 
-                        <button type="submit" x-show="!searchQuery"
-                            class="absolute inset-y-0 right-0 flex items-center pr-5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 transcolor">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                            </svg>
-                        </button>
-                    </form>
-                    {{-- Dropdown Autocomplete --}}
-                    <div x-show="showSuggestions" @click.outside="showSuggestions = false" x-transition x-cloak
-                        class="absolute top-full mt-2 w-full bg-slate-700 rounded-lg shadow-lg border border-slate-600 max-h-60 overflow-y-auto z-50">
-                        <ul class="divide-y divide-slate-600">
-                            <template x-for="product in suggestions" :key="product.slug">
-                                <li>
-                                    <a href="#" @click.prevent="selectSuggestion(product.name)"
-                                        class="flex items-center gap-3 p-3 hover:bg-slate-600/50">
-                                        <img :src="product.thumbnail_url"
-                                            class="w-10 h-10 object-cover rounded-md flex-shrink-0">
-                                        <span x-text="product.name" class="font-semibold text-white"></span>
-                                    </a>
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
+                            <button type="submit" x-show="!searchQuery"
+                                class="absolute inset-y-0 right-0 flex items-center pr-5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-400 transcolor">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                </svg>
+                            </button>
+                        </form>
+                        {{-- Dropdown Autocomplete --}}
+                        <div x-show="showSuggestions" @click.outside="showSuggestions = false" x-transition x-cloak
+                            class="absolute top-full mt-2 w-full bg-slate-700 rounded-lg shadow-lg border border-slate-600 max-h-60 overflow-y-auto z-50">
+                            <ul class="divide-y divide-slate-600">
+                                <template x-for="product in suggestions" :key="product.slug">
+                                    <li>
+                                        <a href="#" @click.prevent="selectSuggestion(product.name)"
+                                            class="flex items-center gap-3 p-3 hover:bg-slate-600/50">
+                                            <img :src="product.thumbnail_url"
+                                                class="w-10 h-10 object-cover rounded-md flex-shrink-0">
+                                            <span x-text="product.name" class="font-semibold text-white"></span>
+                                        </a>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 @guest
                     <a href="{{ route('login') }}"

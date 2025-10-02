@@ -77,7 +77,7 @@
                         class="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 
                        dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500 transition-colors duration-300">
                         <option value="all">Semua Status</option>
-                        @foreach (['pending', 'success', 'cancelled', 'failed'] as $status)
+                        @foreach (['pending', 'success', 'failed'] as $status)
                             <option value="{{ $status }}" {{ $selectedStatus == $status ? 'selected' : '' }}>
                                 {{ ucfirst($status) }}
                             </option>
@@ -192,6 +192,24 @@
                                 @endforeach
                             </div>
                         </div>
+                        {{-- Update status button --}}
+                        @if ($order->status == 'pending')
+                            <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg border border-yellow-300 dark:border-yellow-700">
+                                <h4 class="text-md font-bold text-yellow-800 dark:text-yellow-300 mb-3">Aksi Admin</h4>
+                                <p class="text-sm text-yellow-700 dark:text-yellow-400 mb-4">Anda dapat menyetujui (Success) atau menolak (Failed) pesanan ini secara manual.</p>
+                                <form action="{{ route('orders.updateStatus', $order) }}" method="POST" class="flex flex-col sm:flex-row items-center gap-4">
+                                    @csrf
+                                    <button type="submit" name="status" value="success" class="w-full sm:w-auto green-gradient-wh text-white rounded-lg px-4 py-2 font-semibold flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                        Setujui
+                                    </button>
+                                    <button type="submit" name="status" value="failed" class="w-full sm:w-auto red-gradient-wh text-white rounded-lg px-4 py-2 font-semibold flex items-center justify-center gap-2">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                        Tolak
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @empty

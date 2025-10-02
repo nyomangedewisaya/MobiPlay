@@ -22,7 +22,8 @@
                 <div x-data="{ dropdownOpen: false }" class="relative hidden lg:inline-flex">
                     <button @click="dropdownOpen = !dropdownOpen" class="flex items-center gap-3">
                         <p class="text-gray-700 dark:text-white font-medium">{{ Auth::user()->name }}</p>
-                        <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/96x96/E2E8F0/475569?text=M' }}" alt="{{ Auth::user()->name }}" class="w-12 h-12 rounded-full mx-auto">
+                        <img src="{{ Auth::user()->avatar ?? 'https://placehold.co/96x96/E2E8F0/475569?text=M' }}"
+                            alt="{{ Auth::user()->name }}" class="w-12 h-12 rounded-full mx-auto">
                     </button>
                     <div x-show="dropdownOpen" @click.outside="dropdownOpen = false" x-transition x-cloak
                         class="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-slate-700 rounded-lg shadow-xl border dark:border-slate-600 py-1 z-50">
@@ -410,8 +411,10 @@
                                 labels: doughnutData.labels,
                                 datasets: [{
                                     data: doughnutData.counts,
-                                    backgroundColor: ['rgba(52, 211, 153, 0.9)', 'rgba(251, 191, 36, 0.9)',
-                                        'rgba(239, 68, 68, 0.9)', 'rgba(156, 163, 175, 0.9)'
+                                    backgroundColor: [
+                                        'rgba(52, 211, 153, 0.9)', 
+                                        'rgba(239, 68, 68, 0.9)', 
+                                        'rgba(251, 191, 36, 0.9)', 
                                     ],
                                     borderColor: isDark ? '#1f2937' : '#ffffff',
                                 }]
@@ -431,7 +434,7 @@
                                     datalabels: {
                                         formatter: (value, ctx) => {
                                             let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b,
-                                                0);
+                                            0);
                                             if (sum === 0) return '0%';
                                             return `${(value * 100 / sum).toFixed(1)}%`;
                                         },

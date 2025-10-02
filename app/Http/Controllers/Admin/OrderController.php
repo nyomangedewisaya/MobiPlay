@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -33,5 +34,20 @@ class OrderController extends Controller
         $isFilterActive = $request->has('month') || $request->has('year') || $request->input('status', 'all') !== 'all' || $request->has('search');
 
         return view('admin.orders.index', compact('orders', 'years', 'selectedMonth', 'selectedYear', 'selectedStatus', 'isFilterActive'));
+    }
+
+    public function updateStatus(Request $request, Order $order)
+    {
+        if ($order->status !== 'pending') {
+            return redirect()->route('managements.orders.index')->with('error', 'Hanya pesanan yang tertunda yang bisa diubah statusnya.');
+        }
+
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['success', 'failed'])],
+        ]);
+
+        $order->update(['status' => $validated['status']]);
+
+        return redirect()->route('orders.index')->with('success', 'Status pesanan berhasil diperbarui.');
     }
 }
